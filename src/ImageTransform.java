@@ -6,23 +6,40 @@ import edu.macalester.graphics.Image;
 public class ImageTransform {
 
     public static Image lighten(Image srcImage) {
-        // TODO: Task 1
-
-        throw new UnsupportedOperationException("Method not yet defined");
+        float[] pixels = srcImage.toFloatArray(Image.PixelFormat.RGB);
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] *= 1.5; 
+        }
+        return new Image((int) srcImage.getWidth(), (int) srcImage.getHeight(), pixels, Image.PixelFormat.RGB);
     }
 
 
     public static Image greenShift(Image srcImage) {
-        // TODO: Task 2
+        float[] pixels = srcImage.toFloatArray(Image.PixelFormat.RGB);
 
-        throw new UnsupportedOperationException("Method not yet defined");
+        for (int i = 1; i < pixels.length; i += 3) {
+            pixels[i] += 0.25; 
+        }
+
+        return new Image((int) srcImage.getWidth(), (int) srcImage.getHeight(), pixels, Image.PixelFormat.RGB);
     }
 
     public static Image invert(Image srcImage) {
-        // TODO: Task 3
-
-        throw new UnsupportedOperationException("Method not yet defined");
+        float[] pixels = srcImage.toFloatArray(Image.PixelFormat.RGB); 
+    
+        byte[] invertedPixels = new byte[pixels.length];
+    
+        for (int i = 0; i < pixels.length; i++) {
+            int colorValue = Math.round(pixels[i] * 255);  
+            colorValue = 255 - colorValue; 
+    
+            invertedPixels[i] = (byte) Math.min(255, Math.max(0, colorValue));  
+        }
+    
+        return new Image((int) srcImage.getWidth(), (int) srcImage.getHeight(), invertedPixels, Image.PixelFormat.RGB);
     }
+    
+    
 
     public static void main(String[] args) {
         Image srcImage = new Image("mscs-shield.png");
